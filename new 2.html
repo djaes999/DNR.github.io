@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Digital Root Calculator</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    width: 340px;
+    text-align: center;
+  }
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #f8fafc;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #f8fafc;
+    box-sizing: border-box;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  button {
+    margin-top: 16px;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #6366f1;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: #4f46e5;
+  }
+  .result {
+    margin-top: 24px;
+  }
+  .result .big {
+    font-size: 56px;
+    font-weight: bold;
+    color: #a5b4fc;
+  }
+  .steps {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .error {
+    color: #f87171;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔢 Digital Root Calculator</h1>
+    <input type="text" id="numInput" placeholder="Enter a 10-digit number" maxlength="20" inputmode="numeric">
+    <button onclick="calculate()">Calculate</button>
+    <div class="error" id="errorMsg"></div>
+    <div class="result" id="resultBox" style="display:none;">
+      <div class="big" id="finalDigit"></div>
+      <div class="steps" id="stepsText"></div>
+    </div>
+  </div>
+
+<script>
+function calculate() {
+  const input = document.getElementById('numInput').value.trim();
+  const errorMsg = document.getElementById('errorMsg');
+  const resultBox = document.getElementById('resultBox');
+
+  errorMsg.textContent = '';
+  resultBox.style.display = 'none';
+
+  if (!/^\d+$/.test(input)) {
+    errorMsg.textContent = 'Please enter digits only.';
+    return;
+  }
+
+  let current = input;
+  let stepsList = [current];
+
+  while (current.length > 1) {
+    let sum = 0;
+    for (const ch of current) {
+      sum += parseInt(ch, 10);
+    }
+    current = sum.toString();
+    stepsList.push(current);
+  }
+
+  document.getElementById('finalDigit').textContent = current;
+  document.getElementById('stepsText').textContent = stepsList.join(' → ');
+  resultBox.style.display = 'block';
+}
+
+document.getElementById('numInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') calculate();
+});
+</script>
+</body>
+</html>
